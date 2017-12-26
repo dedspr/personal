@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<!--
+  * Please see the included README.md file for license terms and conditions.
+  -->
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
+    <style>
+        /* following two viewport lines are equivalent to meta viewport statement above, and is needed for Windows */
+        /* see http://www.quirksmode.org/blog/archives/2014/05/html5_dev_conf.html and http://dev.w3.org/csswg/css-device-adapt/ */
+        @-ms-viewport {
+            width: 100vw;
+            min-zoom: 100%;
+            zoom: 100%;
+        }
+
+        @viewport {
+            width: 100vw;
+            min-zoom: 100% zoom: 100%;
+        }
+
+        @-ms-viewport {
+            user-zoom: fixed;
+            min-zoom: 100%;
+        }
+
+        @viewport {
+            user-zoom: fixed;
+            min-zoom: 100%;
+        }
+        /*@-ms-viewport { user-zoom: zoom ; min-zoom: 100% ; max-zoom: 200% ; }   @viewport { user-zoom: zoom ; min-zoom: 100% ; max-zoom: 200% ; }*/
+    </style>
+    <link href="css/bootstrap.css" type="text/css" rel="stylesheet" media="all">
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="all">
+    <!--Custom-Theme-files-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!--//Custom-Theme-files-->
+    <!--js-->
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <!--//js-->
+    <!--start-smoth-scrolling-->
+    <script type="text/javascript" src="js/move-top.js"></script>
+    <script type="text/javascript" src="js/easing.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+                $('html,body').animate({ scrollTop: $(this.hash).offset().top }, 1000);
+            });
+        });
+    </script>
+    <!--start-smoth-scrolling-->
+</head>
+
+<body>
+    <div id="home" class="banner">
+        <div class="container">
+            <div class="header-info">
+                <div class="logo">
+                    <h1 class="logo-head"><a href="index.html">Personal</a></h1>
+                </div>
+                <div class="header-info-right">
+                    <div class=" top-nav">
+                        <span class="menu"><img src="images/menu.png" alt="" /></span>
+                        <ul class="nav1">
+                            <li><a href="index.html" class="active">Home</a></li>
+                            <li><a href="contato.html">Contato</a></li>
+                        </ul>
+                        <!-- script-for-menu -->
+                        <script>
+                            $("span.menu").click(function () {
+                                $("ul.nav1").slideToggle(300, function () { });
+                            });
+                        </script>
+                        <!-- /script-for-menu -->
+                    </div>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="banner-text" style="margin-top: 150px; height: 500px;">
+                <div class="content">
+                    <div id="msg"></div>
+                    <div class="input-group form-group-no-border input-lg">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </span>
+                        <input type="text" id="email" class="form-control" placeholder="E-mail...">
+                    </div>
+                    <div class="input-group form-group-no-border input-lg">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-ok"></i>
+                        </span>
+                        <input type="text" id="codacesso" placeholder="Código acesso..." class="form-control" />
+                    </div>
+                </div>
+                <div class="text-center" style="margin-top: 50px;">
+                    <a onclick="validarUsuario()" class="btn btn-lg btn-primary">Entrar</a>
+                </div> 
+            </div>
+            
+        </div>
+    </div>
+    <script src="cordova.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/init-app.js"></script>
+    <script src="xdk/init-dev.js"></script>
+    
+    <script src="js/db.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            $.localDB.init();
+        });
+
+        function validarUsuario() {
+
+            if ($("#email").val() != "" && $("#codacesso").val() != "")
+            {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "https://personalapp.000webhostapp.com/personal/atletaacesso.php?email=" + $("#email").val() + "&codacesso=" + $("#codacesso").val(), false);
+                xhr.onload = function(){
+                    if(xhr.status == 200)
+                    {
+                        var json_string = xhr.responseText;
+                        var json = JSON.parse(json_string);
+                        $.localDB.salvarUsuario(json.idatleta, json.email, json.nome, json.stbloqueio, json.mensagem);
+                        
+                    }
+                    else if(xhr.status == 404)
+                    {
+                        intel.xdk.notification.alert("Web Service Doesn't Exist", "Error");
+                    }
+                    else
+                    {
+                        intel.xdk.notification.alert("Unknown error occured while connecting to server", "Error");
+                    }
+                }
+                xhr.send();
+                
+            }
+            else
+                $("#msg").html('<div class="alert alert-danger">Informe e-mail e código de acesso!</div>');
+        }
+
+    </script>
+    
+</body>
+
+</html>
