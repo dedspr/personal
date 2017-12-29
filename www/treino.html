@@ -32,7 +32,9 @@
         /*@-ms-viewport { user-zoom: zoom ; min-zoom: 100% ; max-zoom: 200% ; }   @viewport { user-zoom: zoom ; min-zoom: 100% ; max-zoom: 200% ; }*/
     </style>
     <link href="css/bootstrap.css" type="text/css" rel="stylesheet" media="all">
-    <link href="css/style.css" type="text/css" rel="stylesheet" media="all">
+    <link href='css/fontawesome/css/font-awesome.min.css' type="text/css" rel="stylesheet" media="all">
+    <link href="js/pomodoro-timer/css/style.css" type="text/css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="css/style.css">
     <!--Custom-Theme-files-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -44,6 +46,7 @@
 </head>
 
 <body>
+    <audio src="234564_4019029-lq.mp3" id="alarm"></audio>
     <div id="home" class="banner">
         <div class="container">
             <div class="header-info">
@@ -68,30 +71,45 @@
                 </div>
                 <div class="clearfix"> </div>
             </div>
-            <div class="banner-text" >
-                <div class="banner-left animated wow fadeInRight" data-wow-duration="1000ms">
-                    <h2>Olá, <span id="spanUser">Douglas</span></h2>
-                    <p id="spanMsgUsuario">Mensagem tua para o usuário</p>
-                </div>
-                <div class="b-right animated wow fadeInLeft" data-wow-duration="1000ms">
-                    <div class="b1">
-                        <h4>Dados iniciais</h4>
-                        <p>% gordura</p>
-                        <p>massa magra /kg</p>
-                        <p>massa gorda /kg</p>
-                    </div>
-                    <div class="b2">
-                        <h4>Metas</h4>
-                        <p>% gordura</p>
-                        <p>massa magra /kg</p>
-                        <p>massa gorda /kg</p>
+            <div class="text-center" id="options" style="margin-top: 20px;">
+                <div class="option pull-left">
+                    <div class="text-center">
+                        <h4>Duração do treino (min)</h4>
+                        <button class="btn btn-xs btn-danger time-select" data-method="sub-sess">
+                            <i class="fa fa-minus" data-method="sub-sess"></i>
+                        </button>
+                        <p id="sessTime"></p>
+                        <button class="btn btn-xs btn-info time-select" data-method="add-sess">
+                            <i class="fa fa-plus" data-method="add-sess"></i>
+                        </button>
                     </div>
                 </div>
-                <div class="clearfix"></div>
+                <div class="text-center" id="resetContainer">
+                    <button id="reset" class="btn btn-md btn-primary">Parar</button>
+                </div>
+                <div class="option pull-right">
+                    <div class="text-center">
+                        <h4>Duração intervalo (min)</h4>
+                        <button class="btn btn-xs btn-danger time-select" data-method="sub-break">
+                            <i class="fa fa-minus" data-method="sub-break"></i>
+                        </button>
+                        <p id="brkTime"></p>
+                        <button class="btn btn-xs btn-info time-select" data-method="add-break">
+                            <i class="fa fa-plus" data-method="add-break"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="bnr-img animated wow fadeInDown" data-wow-duration="1000ms">
-                <img src="images/gg.png" alt="" />
+            <div class="text-center session" id="stopWatch">
+                <h2 id="title">Treino</h2>
+                <h1 id="time"></h1>
+
+                <i class="fa fa-2x fa-play" data-method="add-sess"></i>
             </div>
+        </div>
+
+        <div>
+
         </div>
     </div>
 
@@ -111,12 +129,10 @@
                     </center>
                 </div>
                 <div class="col-xs-4">
-                    <a href="treino.html">
-                        <center>
-                            <span class="glyphicon glyphicon-heart-empty gi-2x" style="color: white; width: 100%;" aria-hidden="true"></span>
-                            <span class="glyphicon-class" style="color: white">Inciar treino</span>
-                        </center>
-                    </a>
+                    <center>
+                        <span class="glyphicon glyphicon-heart-empty gi-2x" style="color: white; width: 100%;" aria-hidden="true"></span>
+                        <span class="glyphicon-class" style="color: white">Inciar treino</span>
+                    </center>
                 </div>
                 <div class="col-xs-2">
                     <center>
@@ -137,6 +153,7 @@
     <script src="js/app.js"></script>
     <script src="js/init-app.js"></script>
     <script src="xdk/init-dev.js"></script>
+    <script src="js/pomodoro-timer/js/index.js"></script>
     
     <script src="js/db.js" type="text/javascript"></script>
 
@@ -145,7 +162,6 @@
             $.localDB.init();
             $.localDB.verificaUsuario();
         });
-        
     </script>
     
 </body>
